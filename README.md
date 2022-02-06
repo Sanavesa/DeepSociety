@@ -2,7 +2,7 @@
  Deep Society is a gateway that creates new ways for us to connect with people around us and understand them better.
  
 ## Inspiration
-As a foreigner, understanding other cultures is an integral part of my life and it is a recurring theme. We wanted an accessible way to understand the values and beliefs on the cultures we partook in; sometimes it becomes difficult to understand them. Thus, it motivated us to build an AI-driven cultural educator that answers your every question and doubt in detail.
+As an international student, understanding other cultures is an integral part of my life and it is a recurring theme. We wanted an accessible way to understand the values and beliefs on the cultures we partook in; sometimes it becomes difficult to understand them. Thus, it motivated us to build an AI-driven cultural educator that answers your every question and doubt in detail.
 
 Furthermore, it is proven that we absorb knowledge faster via speech than text which inspired us to take this route of having a fully-conversational speech-2-speech application, where your guides have unique personalities and interesting backgrounds.
 
