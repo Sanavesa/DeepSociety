@@ -20,5 +20,5 @@ A fully-functional application that has thought-provoking conversations with AI 
 Training ML models from scratch is hard, and in a hackathon its impossible. Always use pre-trained models!
 
 ## What's next for Deep Society
--A new DLC personal assistant for Bob™ and Friends (spoiler alert: it will be Charlie!).
--Expand the domain of Deep Society to more than just Society and Cultures; the personal assistants are not limited to the current scope.
+- A new DLC personal assistant for Bob™ and Friends (spoiler alert: it will be Charlie!).
+- Expand the domain of Deep Society to more than just Society and Cultures; the personal assistants are not limited to the current scope.
