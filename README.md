@@ -2,10 +2,10 @@
  Deep Society is a gateway that creates new ways for us to connect with people around us and understand them better.
  
 ## Inspiration
-Wouldn't it be cool to have a personal assistant at your fingertips that answers your every question and doubt? Well, here is Bob™ and Friends; they are extraordinarily educated and highly resourceful. Whatever you ask them, they'll reply!
+Wouldn't it be cool to have a personal assistant at your fingertips that answers your every question and doubt? Well, here is Bob™ and Friends; they are extraordinarily educated and highly resourceful. Whatever you ask them, they'll answer!
 
 ## What it does
-To be filled.
+DeepSociety provides a suite of personalized virtual assistants that can converse with you about deep thought-provoking ideas. The focus of Bob™ and Friends is to help you understand the people around you and other societies and cultures, so that you can prosper and live happily ever after.
 
 ## How we built it
 We used Flutter to build the Frontend, along with speech recognition and speech synthesis to allow for a seamless conversion between text to speech and vice versa. Moreover, the Backend was developed in Flask and deployed to Google Cloud Platform. The question answering system was a Generative-Adversarial-Network and a Transformer model to predict the next token given a prompt (GPT-3).
@@ -17,8 +17,11 @@ Initially, we faced roadblocks when deploying our Backend to GCP where some endp
 A fully-functional application that has thought-provoking conversations with AI bots.
 
 ## What we learned
-Training ML models from scratch is hard, and in a hackathon its impossible. Always use pre-trained models!
+Training ML models from scratch is hard and in a hackathon it's impossible. Always use pre-trained models!
 
 ## What's next for Deep Society
 - A new DLC personal assistant for Bob™ and Friends (spoiler alert: it will be Charlie!).
 - Expand the domain of Deep Society to more than just Society and Cultures; the personal assistants are not limited to the current scope.
+
+## Demo: Try it out!
+At the moment, only an Android APK is available [here](https://github.com/Sanavesa/DeepSociety/releases/tag/release).
