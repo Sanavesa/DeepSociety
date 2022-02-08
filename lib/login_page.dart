@@ -1,6 +1,7 @@
 import 'package:deep_convo/app_state.dart';
 import 'package:deep_convo/chat_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'app_api.dart';
 
@@ -41,6 +42,40 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  _login (BuildContext buildContext) async {
+    final AppState appState = Provider.of(buildContext, listen: false);
+    final String username = _textController.text;
+    final String botName = appState.botName;
+    _showLoading(buildContext);
+    final bool success = await AppApi.login(username, botName);
+
+    setState(() {
+      Navigator.of(context).pop(); // Remove loading
+      if (success) {
+        Navigator.of(context).push(_createRoute());
+        _textController.clear();
+      }
+    });
+  }
+
+  _showLoading(BuildContext context) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: SizedBox(
+            width: 64,
+            height: 64,
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+        );
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -66,11 +101,11 @@ class _LoginPageState extends State<LoginPage> {
                 overflow: TextOverflow.visible,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 54,
-                  overflow: TextOverflow.visible,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'sans serif'
+                    fontSize: 54,
+                    overflow: TextOverflow.visible,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'sans serif'
                 ),
               ),
               Column(
@@ -81,9 +116,9 @@ class _LoginPageState extends State<LoginPage> {
                     maxLength: null,
                     maxLines: null,
                     style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      decorationColor: Colors.white
+                        fontSize: 20,
+                        color: Colors.white,
+                        decorationColor: Colors.white
                     ),
                     decoration: const InputDecoration(
                       hintStyle: TextStyle(
@@ -109,10 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                       builder: (context, value, child) {
                         return ElevatedButton(
                           child: const Text('GET STARTED'),
-                          onPressed: () {
-                            print('Your name is ${_textController.text}');
-                            Navigator.of(context).push(_createRoute());
-                          },
+                          onPressed: () => _login(context),
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size.fromHeight(60),
                             textStyle: const TextStyle(

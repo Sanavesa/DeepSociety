@@ -1,12 +1,18 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:dio/dio.dart';
 
 import 'constants.dart';
 
 class AppApi {
+
+  static final Dio _dio = Dio(_options);
+  static final BaseOptions _options = BaseOptions(
+      baseUrl: Constants.baseUrl,
+      responseType: ResponseType.json,
+      headers: {HttpHeaders.contentTypeHeader: "application/json"},
+  );
 
   static void _showError(String message) {
     Fluttertoast.showToast(
@@ -19,102 +25,98 @@ class AppApi {
     );
   }
 
-  static Future<String> login(String username, String botName) async {
-    final params = {
+  static Future<bool> login(String username, String botName) async {
+    final payload = {
       'username': username,
-      'botName': botName,
+      'botname': botName,
     };
-    var uri = Uri.http(Constants.baseUrl, '/login', params);
 
-    print(uri);
+    print('called login with');
+    print(payload);
 
-    final response = await http.get(uri, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-    });
-
-    if (response.statusCode != 200) {
-      _showError('ERROR ${response.statusCode} - Failed to login!');
-      return 'ERROR';
+    try {
+      await _dio.post('/login', data: payload);
+      return true;
     }
-
-    print(response.statusCode);
-    print(response.body);
-
-    final data = jsonDecode(response.body);
-    final text = data['text'] as String;
-    return text;
+    on DioError catch(e) {
+      _showError(e.response?.data['error']);
+      return false;
+    }
   }
 
-  static Future<String> send(String username, String message) async {
-    final params = {
-      'username': username,
-      'text': message,
-    };
-    var uri = Uri.http(Constants.baseUrl, '/send', params);
-
-    print(uri);
-
-    final response = await http.get(uri, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-    });
-
-    if (response.statusCode != 200) {
-      _showError('ERROR ${response.statusCode} - Failed to send text!');
-      return 'ERROR';
-    }
-
-    print(response.statusCode);
-    print(response.body);
-
-    final data = jsonDecode(response.body);
-    final text = data['text'] as String;
-    return text;
-  }
-
-  static Future<void> clear(String username) async {
-    final params = {
+  static Future<bool> logout(String username) async {
+    final payload = {
       'username': username
     };
-    var uri = Uri.http(Constants.baseUrl, '/clear', params);
 
-    print(uri);
+    print('called logout with');
+    print(payload);
 
-    final response = await http.get(uri, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-    });
-
-    if (response.statusCode != 200) {
-      _showError('ERROR ${response.statusCode} - Failed to send text!');
-      return;
+    try {
+      await _dio.post('/logout', data: payload);
+      return true;
     }
-
-    print(response.statusCode);
-    print(response.body);
-
-    return;
+    on DioError catch(e) {
+      _showError(e.response?.data['error']);
+      return false;
+    }
   }
 
-  static Future<void> changeBot(String username, String botName) async {
-    final params = {
+  static Future<String?> send(String username, String message) async {
+    final payload = {
       'username': username,
-      'botName': botName
+      'message': message,
     };
-    var uri = Uri.http(Constants.baseUrl, '/changeBot', params);
 
-    print(uri);
+    print('called send with');
+    print(payload);
 
-    final response = await http.get(uri, headers: {
-      HttpHeaders.contentTypeHeader: 'application/json',
-    });
-
-    if (response.statusCode != 200) {
-      _showError('ERROR ${response.statusCode} - Failed to update bot!');
-      return;
+    try {
+      final response = await _dio.post('/send', data: payload);
+      final reply = response.data['data'] as String;
+      return reply;
     }
+    on DioError catch(e) {
+      _showError(e.response?.data['error']);
+      return null;
+    }
+  }
 
-    print(response.statusCode);
-    print(response.body);
+  static Future<bool> changeBotName(String username, String botName) async {
+    final payload = {
+      'username': username,
+      'botname': botName
+    };
 
-    return;
+    print('called change_botname with');
+    print(payload);
+
+    try {
+      await _dio.post('/change_botname', data: payload);
+      return true;
+    }
+    on DioError catch(e) {
+      _showError(e.response?.data['error']);
+      return false;
+    }
+  }
+
+  static Future<bool> changeUsername(String username, String newUsername) async {
+    final payload = {
+      'username': username,
+      'new_username': newUsername
+    };
+
+    print('called change_username with');
+    print(payload);
+
+    try {
+      await _dio.post('/change_username', data: payload);
+      return true;
+    }
+    on DioError catch(e) {
+      _showError(e.response?.data['error']);
+      return false;
+    }
   }
 }

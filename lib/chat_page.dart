@@ -30,22 +30,12 @@ class _ChatPageState extends State<ChatPage> {
   late BuildContext _buildContext;
 
   final ScrollController _scrollController = ScrollController();
-  bool _loggedIn = false;
 
   @override
   void initState() {
     super.initState();
     _initSpeech2Text();
     _initText2Speech();
-  }
-
-  Future<void> _loginAPI() async {
-    AppState appState = Provider.of(_buildContext, listen: false);
-    String reply = await AppApi.login(widget.username, appState.botName);
-    setState(() {
-      _chat.add(reply);
-      _speak(reply);
-    });
   }
 
   Future<void> _sendAPI() async {
@@ -57,15 +47,17 @@ class _ChatPageState extends State<ChatPage> {
       _chat.add(_text);
     });
 
-    String reply = await AppApi.send(widget.username, _text);
-    setState(() {
-      _chat.add(reply);
-      _speak(reply);
-    });
+    String? reply = await AppApi.send(widget.username, _text);
+    if (reply != null) {
+      setState(() {
+        _chat.add(reply);
+        _speak(reply);
+      });
+    }
   }
 
-  Future<void> _clearAPI() async {
-    await AppApi.clear(widget.username);
+  Future<void> _logoutAPI() async {
+    await AppApi.logout(widget.username);
     setState(() {});
   }
 
@@ -178,7 +170,7 @@ class _ChatPageState extends State<ChatPage> {
   void _endSession() async {
     await _speech2Text.stop();
     await _text2Speech.stop();
-    await _clearAPI();
+    await _logoutAPI();
     Navigator.pop(context);
   }
 
@@ -266,11 +258,6 @@ class _ChatPageState extends State<ChatPage> {
 
     _buildContext = context;
     AppState appState = Provider.of(context);
-
-    if (!_loggedIn) {
-      _loggedIn = true;
-      _loginAPI();
-    }
 
     return Scaffold(
       appBar: AppBar(
@@ -361,7 +348,7 @@ class _ChatPageState extends State<ChatPage> {
                         itemCount: _chat.length,
                         itemBuilder: (BuildContext context, int index) {
                           // Bot message
-                          if (index % 2 == 0) {
+                          if (index % 2 == 1) {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 20, right: 50),
                               child: Container(

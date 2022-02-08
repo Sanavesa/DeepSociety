@@ -50,7 +50,7 @@ class _ChangeBotNamePageState extends State<ChangeBotNamePage> {
               onChanged: (selection) {
                 setState(() {
                   appState.botName = selection!.username;
-                  AppApi.changeBot(widget.username, appState.botName);
+                  AppApi.changeBotName(widget.username, appState.botName);
                 });
               },
               groupValue: appState.bot,
